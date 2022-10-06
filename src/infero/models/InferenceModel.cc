@@ -48,7 +48,7 @@ void InferenceModel::open()  {
 
     // soft check: multiple open() allowed
     if (isOpen_){
-        Log::info() << "INFO: Inference model already open.. " << std::endl;
+        //Log::info() << "INFO: Inference model already open.. " << std::endl;
     } else {
         isOpen_ = true;
     }
@@ -62,8 +62,8 @@ void InferenceModel::infer(linalg::TensorFloat& tIn, linalg::TensorFloat& tOut, 
     eckit::linalg::TensorFloat input_tensor;
 
     if (tIn.isRight()) {
-        Log::info() << "Input Tensor has right-layout, but left-layout is needed. "
-                    << "Transforming to left.." << std::endl;
+        //Log::info() << "Input Tensor has right-layout, but left-layout is needed. "
+         //           << "Transforming to left.." << std::endl;
         input_tensor = tIn.transformRightToLeftLayout();
     } else {
 
@@ -110,8 +110,8 @@ void InferenceModel::infer_mimo(std::vector<eckit::linalg::TensorFloat*> &tIn, s
     for (int i = 0; i < inputTensors.size(); ++i) {
         if (inputTensors[i]->isRight()) {
 
-            Log::info() << i << "-th Input Tensor has right-layout, "
-                        << "but left-layout is needed. Transforming to left.." << std::endl;
+            //Log::info() << i << "-th Input Tensor has right-layout, "
+             //           << "but left-layout is needed. Transforming to left.." << std::endl;
 
             temporaryCopies.emplace_back(new eckit::linalg::TensorFloat(inputTensors[i]->transformRightToLeftLayout()));
             inputTensors[i] = temporaryCopies.back().get();
@@ -121,7 +121,7 @@ void InferenceModel::infer_mimo(std::vector<eckit::linalg::TensorFloat*> &tIn, s
 
     // do the actual inference..
     eckit::Timing start_infer(statistics_.timer());
-    Log::info() << "doing inference.." << std::endl;
+    //Log::info() << "doing inference.." << std::endl;
     infer_mimo_impl(inputTensors, input_names, tOut, output_names);
     statistics_.inferenceTiming_ += eckit::Timing{statistics_.timer()} - start_infer;
 
@@ -138,7 +138,7 @@ void InferenceModel::close() {
 
     // soft check: multiple close() allowed
     if (!isOpen_){
-        Log::info() << "INFO: Inference model already closed.. " << std::endl;
+        //Log::info() << "INFO: Inference model already closed.. " << std::endl;
     } else {
         isOpen_ = false;
     }

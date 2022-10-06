@@ -34,7 +34,8 @@ contains
     function test_model_init() result(success)
       type(infero_model) :: model
 
-      character(1024) :: model_path="@CMAKE_BINARY_DIR@/tests/data/mimo_model/mimo_model.onnx"
+      character(1024) :: model_path="@CMAKE_BINARY_DIR@&
+        /tests/data/mimo_model/mimo_model.onnx"
       character(1024) :: model_type="onnx"
       character(1024) :: yaml_config
 

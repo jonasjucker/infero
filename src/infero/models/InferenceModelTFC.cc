@@ -227,7 +227,7 @@ void InferenceModelTFC::infer_mimo_impl(std::vector<eckit::linalg::TensorFloat*>
     // array of outputs for output-operations
     TF_Output* Output = static_cast<TF_Output*>(malloc(sizeof(TF_Output) * NOutputs));
 
-    std::cout << "NOutputs: " << NOutputs << std::endl;
+    //std::cout << "NOutputs: " << NOutputs << std::endl;
     for (size_t i=0; i<NOutputs; i++){
         Output[i] = GetOutputOperationBuffer_(output_names[i]);
     }
@@ -273,8 +273,8 @@ void InferenceModelTFC::infer_mimo_impl(std::vector<eckit::linalg::TensorFloat*>
 
         if (tOut[i]->isRight()) {
 
-            Log::info() << i << "-th Output Tensor needs right-layout. "
-                        << "Transforming left to right.." << std::endl;
+            //Log::info() << i << "-th Output Tensor needs right-layout. "
+            //            << "Transforming left to right.." << std::endl;
 
             // TFC uses Left (C) tensor layouts, so we need to convert
             TensorFloat tLeft(offsets, tOut[i]->shape(), false);  // wrap data
@@ -316,7 +316,7 @@ void InferenceModelTFC::print(std::ostream &os) const
 void InferenceModelTFC::check_status(const TF_Status* s, std::string name){
 
     if(TF_GetCode(s) == TF_OK) {
-        Log::info() << name << " OK" << std::endl;
+        //Log::info() << name << " OK" << std::endl;
     }
     else {
         Log::error() << name << " NOT OK" << std::endl;
@@ -332,10 +332,10 @@ TF_Output InferenceModelTFC::GetOperationBuffer_(std::string name, int op_id)
 
     int t0_ndims = TF_GraphGetTensorNumDims(network_graph, t0, err_status);
     check_status(err_status, "TF_GraphGetTensorNumDims");
-    Log::info() << "Layer " << name
-                << " [id=" << op_id << "]"
-                << " has " << t0_ndims
-                << " dims." << std::endl;
+    //Log::info() << "Layer " << name
+     //           << " [id=" << op_id << "]"
+      //          << " has " << t0_ndims
+       //         << " dims." << std::endl;
 
     int64_t* t0_dims = static_cast<int64_t*>(malloc(sizeof(int64_t) * t0_ndims));
     TF_GraphGetTensorShape(network_graph,
@@ -345,7 +345,7 @@ TF_Output InferenceModelTFC::GetOperationBuffer_(std::string name, int op_id)
                            err_status);
 
     for (int i=0; i<t0_ndims; i++){
-        Log::info() << "N output dims: " << t0_dims[i] << std::endl;
+        //Log::info() << "N output dims: " << t0_dims[i] << std::endl;
     }
 
     check_status(err_status, "TF_GraphGetTensorShape");
@@ -373,7 +373,7 @@ TF_Output InferenceModelTFC::GetInputOperationBuffer_(std::string name)
         TF_Output t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
 
         if(!t1.oper){
-            Log::info() << "Model input layer name : " << inputLayerName << " not valid, trying again.." << std::endl;
+            //Log::info() << "Model input layer name : " << inputLayerName << " not valid, trying again.." << std::endl;
             inputLayerName = "serving_default_input_1";
             t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
             if(!t1.oper){
@@ -386,7 +386,7 @@ TF_Output InferenceModelTFC::GetInputOperationBuffer_(std::string name)
     } else {
         inputLayerName = name;
     }
-    Log::info() << "Input layer: " << inputLayerName << std::endl;
+    //Log::info() << "Input layer: " << inputLayerName << std::endl;
 
     // input tensor buffer
     TF_Output t1 = {TF_GraphOperationByName(network_graph, inputLayerName.c_str()), 0};
